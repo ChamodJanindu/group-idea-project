@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Idea Board</title>
+    <!-- Importing a clean modern font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .board-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .input-section {
+            padding: 24px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            background-color: #f9fafb;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            grid-column: span 1;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+
+        .btn-danger {
+            background-color: transparent;
+            color: #ef4444;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            border: 1px solid transparent;
+        }
+
+        .btn-danger:hover {
+            background-color: #fef2f2;
+            border-color: #fee2e2;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .ideas-container {
+            padding: 24px;
+        }
+
+        .ideas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .stats-box {
+            text-align: center;
+            background: #eff6ff;
+            padding: 16px;
+            border-radius: var(--radius);
+            margin: 0 24px 24px;
+            border: 1px solid #dbeafe;
+        }
+
+        .stats-label {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .stats-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        #ideaList {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ideas-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        #ideaCount {
+            font-size: 0.875rem;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 999px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        #ideaList {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .idea-item {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .idea-text {
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 1.05rem;
+        }
+
+        .idea-author {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .author-name {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #fee2e2;
+            margin-top: 12px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="board-card">
+        <header>
+            <h1>Group Idea Board</h1>
+            <p>Collaborate and share your creative thoughts</p>
+        </header>
+
+        <div class="input-section">
+            <div class="form-grid">
+                <div class="field-group">
+                    <label for="nameSelect">Your Name</label>
+                    <select id="nameSelect">
+                        <option value="">Select your name...</option>
+                        <option value="Chamod">Chamod</option>
+                        <option value="Dinindu">Dinindu</option>
+                        <option value="Nuraj">Nuraj</option>
+                        <option value="Imaz">Imaz</option>
+                        <option value="Hirusha">Hirusha</option>
+                        <option value="Dahami">Dahami</option>
+                        <option value="Osara">Osara</option>
+                        <option value="Sinethma">Sinethma</option>
+                        <option value="Kalhara">Kalhara</option>
+                        <option value="Diyon">Diyon</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label for="ideaInput">The Idea</label>
+                    <input type="text" id="ideaInput" placeholder="Enter your idea here..." autocomplete="off">
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                Please select your name and type an idea first.
+            </div>
+
+            <div class="input-actions">
+                <button id="addIdeaBtn" class="btn-primary">Post Idea</button>
+                <button id="resetInputBtn" class="btn-secondary">Reset Input</button>
+            </div>
+        </div>
+
+        <div class="stats-box">
+            <div class="stats-label">Total Ideas Shared</div>
+            <div id="ideaCountValue" class="stats-value">0</div>
+        </div>
+
+        <div class="ideas-container">
+            <div class="ideas-header">
+                <h2>Idea Feed</h2>
+                <button id="clearIdeasBtn" class="btn-danger">Clear All</button>
+            </div>
+            
+            <ul id="ideaList">
+                <li class="empty-state">No ideas shared yet. Be the first!</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const nameSelect = document.getElementById('nameSelect');
+    const ideaInput = document.getElementById('ideaInput');
+    const addIdeaBtn = document.getElementById('addIdeaBtn');
+    const resetInputBtn = document.getElementById('resetInputBtn');
+    const clearIdeasBtn = document.getElementById('clearIdeasBtn');
+    const ideaList = document.getElementById('ideaList');
+    const errorMessage = document.getElementById('errorMessage');
+    const ideaCountValue = document.getElementById('ideaCountValue');
+
+    let totalIdeas = 0;
+
+    function updateCount() {
+        ideaCountValue.textContent = totalIdeas;
+    }
+
+    function resetInputs() {
+        ideaInput.value = '';
+        nameSelect.selectedIndex = 0;
+        errorMessage.style.display = 'none';
+        ideaInput.focus();
+    }
+
+    addIdeaBtn.addEventListener('click', () => {
+        const name = nameSelect.value;
+        const idea = ideaInput.value.trim();
+
+        if (!name || !idea) {
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        errorMessage.style.display = 'none';
+
+        if (totalIdeas === 0) {
+            ideaList.innerHTML = '';
+        }
+
+        totalIdeas++;
+        updateCount();
+
+        const li = document.createElement('li');
+        li.className = 'idea-item';
+        li.innerHTML = `
+            <span class="idea-text">${idea}</span>
+            <span class="idea-author">suggested by <span class="author-name">${name}</span></span>
+        `;
+
+        ideaList.insertBefore(li, ideaList.firstChild);
+        resetInputs();
+    });
+
+    resetInputBtn.addEventListener('click', resetInputs);
+
+    clearIdeasBtn.addEventListener('click', () => {
+        if (totalIdeas === 0) return;
+        
+        if (confirm('Are you sure you want to clear all ideas?')) {
+            ideaList.innerHTML = '<li class="empty-state">No ideas shared yet. Be the first!</li>';
+            totalIdeas = 0;
+            updateCount();
+        }
+    });
+
+    ideaInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addIdeaBtn.click();
+        }
+    });
+</script>
+
+</body>
+</html>
