@@ -477,55 +477,261 @@
             }
         }
 
-        /* Study Timer Styles */
-        .timer-card {
-            text-align: center;
-            padding: 40px;
+        /* Advanced Study Timer UI Enhancements */
+        :root {
+            --timer-bg: rgba(255, 255, 255, 0.05);
+            --timer-blur: 20px;
+            --timer-accent: #3b82f6;
+            --timer-accent-glow: rgba(59, 130, 246, 0.5);
+            --rest-accent: #10b981;
+            --rest-accent-glow: rgba(16, 185, 129, 0.5);
         }
 
-        .timer-display {
-            font-size: 6rem;
-            font-weight: 800;
-            color: var(--primary);
-            font-variant-numeric: tabular-nums;
-            margin: 20px 0;
-            letter-spacing: -2px;
+        #study-timer-tool .board-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            color: #f8fafc;
         }
 
-        .timer-mode {
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
+        #study-timer-tool .board-header {
+            background: transparent;
+            border: none;
         }
 
-        .timer-controls {
+        .timer-container-advanced {
+            position: relative;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            z-index: 2;
+        }
+
+        /* Glassmorphism Card */
+        .glass-timer-card {
+            background: var(--timer-bg);
+            backdrop-filter: blur(var(--timer-blur));
+            -webkit-backdrop-filter: blur(var(--timer-blur));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
-            gap: 16px;
-            margin-top: 32px;
+            align-items: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .timer-btn {
-            min-width: 120px;
+        .timer-mode-pill {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--timer-accent);
+            transition: all 0.3s ease;
         }
 
-        .progress-container {
-            width: 100%;
-            height: 8px;
-            background: var(--border);
-            border-radius: 4px;
+        .timer-display-advanced {
+            font-size: 4.5rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(to bottom, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin: 10px 0;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        /* SVG Circular Progress */
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.3s linear, stroke 0.5s ease;
+            stroke-linecap: round;
+        }
+
+        /* Controls */
+        .advanced-controls {
+            display: flex;
+            gap: 20px;
             margin-top: 40px;
+        }
+
+        .advanced-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.25rem;
+        }
+
+        .advanced-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .advanced-btn.main-play {
+            width: 72px;
+            height: 72px;
+            background: var(--timer-accent);
+            box-shadow: 0 0 20px var(--timer-accent-glow);
+            border: none;
+        }
+
+        .advanced-btn.main-play:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--timer-accent-glow);
+        }
+
+        /* Background Decorations */
+        .timer-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--timer-accent);
+            filter: blur(80px);
+            opacity: 0.15;
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulse-blob 10s infinite alternate;
+        }
+
+        @keyframes pulse-blob {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-20%, -30%) scale(1.3); }
+        }
+
+        .mode-selector-advanced {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mode-tab {
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .glass-timer-card {
+                width: 280px;
+                height: 280px;
+            }
+            .timer-display-advanced {
+                font-size: 3.5rem;
+            }
+        }
+        /* Falling Leaves Animation */
+        #leavesContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
             overflow: hidden;
         }
 
-        .progress-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 1s linear;
+        .leaf {
+            position: absolute;
+            top: -20px;
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 2px 20px 2px 20px;
+            opacity: 0.6;
+            filter: blur(1px);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Custom Time Input Styles */
+        .custom-time-trigger {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .custom-time-trigger:hover {
+            color: #fff;
+        }
+
+        .custom-time-input-container {
+            display: none;
+            margin-top: 15px;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-time-input-container input {
+            width: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .custom-time-input-container button {
+            padding: 4px 12px;
+            font-size: 0.8rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -712,30 +918,55 @@
             <!-- Study Timer Section -->
             <div id="study-timer-tool" class="tool-section">
                 <div class="board-card">
-                    <header class="board-header">
-                        <h1>Study Timer</h1>
-                        <p>Boost your productivity with the Pomodoro technique</p>
-                    </header>
-
-                    <div class="timer-card">
-                        <div id="timerModeLabel" class="timer-mode">Focus Session</div>
-                        <div id="timerDisplay" class="timer-display">25:00</div>
-                        
-                        <div class="timer-controls">
-                            <button id="startTimerBtn" onclick="toggleTimer()" class="btn-primary timer-btn">Start</button>
-                            <button onclick="setTimerMode('rest')" class="btn-secondary timer-btn">Rest</button>
-                            <button onclick="setTimerMode('study')" class="btn-secondary timer-btn">Study</button>
-                            <button onclick="resetTimer()" class="btn-secondary timer-btn">Reset</button>
+                    <div class="timer-blob" id="timerBlob"></div>
+                    
+                    <div class="timer-container-advanced">
+                        <div class="mode-selector-advanced">
+                            <div id="studyTab" class="mode-tab active" onclick="setTimerMode('study')">Study</div>
+                            <div id="restTab" class="mode-tab" onclick="setTimerMode('rest')">Rest</div>
                         </div>
 
-                        <div class="progress-container">
-                            <div id="progressBar" class="progress-bar"></div>
+                        <div class="glass-timer-card">
+                            <div id="leavesContainer"></div>
+                            <svg class="progress-ring" width="320" height="320">
+                                <circle
+                                    class="progress-ring__circle"
+                                    stroke="var(--timer-accent)"
+                                    stroke-width="8"
+                                    fill="transparent"
+                                    r="150"
+                                    cx="160"
+                                    cy="160"
+                                    id="timerCircle"
+                                />
+                            </svg>
+                            <div id="timerModeLabel" class="timer-mode-pill">Focus Session</div>
+                            <div id="timerDisplay" class="timer-display-advanced">25:00</div>
+                            
+                            <div class="custom-time-trigger" onclick="toggleCustomTime()">Custom Duration</div>
+                            <div id="customTimeContainer" class="custom-time-input-container">
+                                <input type="number" id="customMinutes" min="1" max="180" value="25">
+                                <button onclick="setCustomTime()" class="btn-primary" style="padding: 4px 10px; width: auto;">Set</button>
+                            </div>
+                        </div>
+                        
+                        <div class="advanced-controls">
+                            <button onclick="resetTimer()" class="advanced-btn" title="Reset">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <button id="startTimerBtn" onclick="toggleTimer()" class="advanced-btn main-play" title="Start/Pause">
+                                <svg id="playIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"></path></svg>
+                                <svg id="pauseIcon" style="display:none" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                            </button>
+                            <button onclick="skipMode()" class="advanced-btn" title="Skip">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l10 8-10 8V4z"></path><path d="M19 5v14"></path></svg>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="input-section" style="border-top: 1px solid var(--border); border-bottom: none;">
-                        <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
-                            The Pomodoro technique uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks.
+                    <div class="input-section" style="background: transparent; border: none; padding-bottom: 40px; position: relative; z-index: 2;">
+                        <p style="font-size: 0.9rem; color: #94a3b8; text-align: center; max-width: 400px; margin: 0 auto; opacity: 0.8;">
+                            "The key is not to prioritize what's on your schedule, but to schedule your priorities."
                         </p>
                     </div>
                 </div>
@@ -908,16 +1139,30 @@
             }
         }
 
-        // --- Study Timer Logic ---
+        // --- Advanced Study Timer Logic ---
         let timerInterval;
+        let leavesInterval;
         let timeLeft = 25 * 60;
         let isTimerRunning = false;
         let currentTimerMode = 'study'; // 'study' or 'rest'
+        let studyDuration = 25 * 60;
+        let restDuration = 5 * 60;
+
+        const circle = document.getElementById('timerCircle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        function setProgress(percent) {
+            const offset = circumference - (percent / 100 * circumference);
+            circle.style.strokeDashoffset = offset;
+        }
 
         function updateTimerDisplay() {
             const display = document.getElementById('timerDisplay');
-            const progress = document.getElementById('progressBar');
-            if (!display || !progress) return;
+            if (!display) return;
             
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
@@ -925,30 +1170,38 @@
             
             display.textContent = timeStr;
             
-            const total = currentTimerMode === 'study' ? 25 * 60 : 5 * 60;
+            const total = currentTimerMode === 'study' ? studyDuration : restDuration;
             const percent = ((total - timeLeft) / total) * 100;
-            progress.style.width = `${percent}%`;
+            setProgress(percent);
             
             // Update browser tab title
             document.title = `${timeStr} - ${currentTimerMode === 'study' ? 'Focus' : 'Rest'}`;
         }
 
         function toggleTimer() {
-            const btn = document.getElementById('startTimerBtn');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            
             if (isTimerRunning) {
                 clearInterval(timerInterval);
-                btn.textContent = 'Start';
+                stopLeaves();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
                 isTimerRunning = false;
             } else {
                 isTimerRunning = true;
-                btn.textContent = 'Pause';
+                startLeaves();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
                 timerInterval = setInterval(() => {
                     timeLeft--;
                     updateTimerDisplay();
                     if (timeLeft <= 0) {
                         clearInterval(timerInterval);
+                        stopLeaves();
                         isTimerRunning = false;
-                        btn.textContent = 'Start';
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
                         playTimerEndSound();
                         showTimerNotification();
                     }
@@ -958,18 +1211,113 @@
 
         function resetTimer() {
             clearInterval(timerInterval);
+            stopLeaves();
             isTimerRunning = false;
-            const btn = document.getElementById('startTimerBtn');
-            if (btn) btn.textContent = 'Start';
-            timeLeft = currentTimerMode === 'study' ? 25 * 60 : 5 * 60;
+            document.getElementById('playIcon').style.display = 'block';
+            document.getElementById('pauseIcon').style.display = 'none';
+            timeLeft = currentTimerMode === 'study' ? studyDuration : restDuration;
             updateTimerDisplay();
         }
 
         function setTimerMode(mode) {
             currentTimerMode = mode;
             const label = document.getElementById('timerModeLabel');
-            if (label) label.textContent = mode === 'study' ? 'Focus Session' : 'Rest Break';
+            const blob = document.getElementById('timerBlob');
+            const studyTab = document.getElementById('studyTab');
+            const restTab = document.getElementById('restTab');
+            const circle = document.getElementById('timerCircle');
+            
+            if (mode === 'study') {
+                label.textContent = 'Focus Session';
+                label.style.color = 'var(--timer-accent)';
+                blob.style.background = 'var(--timer-accent)';
+                circle.style.stroke = 'var(--timer-accent)';
+                studyTab.classList.add('active');
+                restTab.classList.remove('active');
+            } else {
+                label.textContent = 'Rest Break';
+                label.style.color = 'var(--rest-accent)';
+                blob.style.background = 'var(--rest-accent)';
+                circle.style.stroke = 'var(--rest-accent)';
+                restTab.classList.add('active');
+                studyTab.classList.remove('active');
+            }
             resetTimer();
+        }
+
+        function skipMode() {
+            setTimerMode(currentTimerMode === 'study' ? 'rest' : 'study');
+        }
+
+        // --- Custom Time Logic ---
+        function toggleCustomTime() {
+            const container = document.getElementById('customTimeContainer');
+            if (container.style.display === 'flex') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'flex';
+                document.getElementById('customMinutes').focus();
+            }
+        }
+
+        function setCustomTime() {
+            const minsInput = document.getElementById('customMinutes');
+            const mins = parseInt(minsInput.value);
+            if (!isNaN(mins) && mins > 0 && mins <= 180) {
+                if (currentTimerMode === 'study') {
+                    studyDuration = mins * 60;
+                } else {
+                    restDuration = mins * 60;
+                }
+                toggleCustomTime();
+                resetTimer();
+            } else {
+                alert("Please enter minutes between 1 and 180.");
+            }
+        }
+
+        // --- Falling Leaves Logic ---
+        function createLeaf() {
+            const container = document.getElementById('leavesContainer');
+            if (!container) return;
+            
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            
+            // Randomize leaf
+            const startX = Math.random() * 100;
+            const size = 10 + Math.random() * 15;
+            const duration = 3 + Math.random() * 4;
+            const delay = Math.random() * 2;
+            
+            // Random color (Greenery or Autumn)
+            const isAutumn = Math.random() > 0.5;
+            leaf.style.background = isAutumn ? `hsl(${20 + Math.random() * 40}, 70%, 50%)` : `hsl(${100 + Math.random() * 40}, 70%, 40%)`;
+            
+            leaf.style.left = `${startX}%`;
+            leaf.style.width = `${size}px`;
+            leaf.style.height = `${size}px`;
+            leaf.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+            
+            container.appendChild(leaf);
+            
+            // Remove after animation
+            setTimeout(() => {
+                leaf.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        function startLeaves() {
+            if (leavesInterval) return;
+            leavesInterval = setInterval(createLeaf, 300);
+        }
+
+        function stopLeaves() {
+            clearInterval(leavesInterval);
+            leavesInterval = null;
+            // Optionally clear existing leaves
+            const container = document.getElementById('leavesContainer');
+            if (container) container.innerHTML = '';
         }
 
         function playTimerEndSound() {
@@ -1001,6 +1349,10 @@
                 Notification.requestPermission();
             }
             alert(`${title}\n${body}`);
+        }
+
+        function initStudyTimer() {
+            updateTimerDisplay();
         }
 
         // --- Tool Switching Logic ---
@@ -1095,8 +1447,11 @@
             }
         });
 
-        // Initialize GPA Calculator
-        window.addEventListener('DOMContentLoaded', initGPACalculator);
+        // Initialize Tools
+        window.addEventListener('DOMContentLoaded', () => {
+            initGPACalculator();
+            initStudyTimer();
+        });
     </script>
 </body>
 </html>
