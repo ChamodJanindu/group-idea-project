@@ -5,31 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Toolkit</title>
     <!-- Importing a clean modern font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-page: #f8fafc;
-            --bg-card: #ffffff;
-            --bg-input: #f9fafb;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            /* Dark Mode (Default / Original) */
+            --primary: #800000; /* Dark Maroon */
+            --secondary: #D4AF37; /* Gold */
+            --white: #ffffff;
+            --bg-page: #800000;
+            --bg-gradient: linear-gradient(135deg, #800000 0%, #4A0404 100%);
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-input: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #D4AF37;
+            --border: rgba(212, 175, 55, 0.3);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --nav-bg: rgba(0, 0, 0, 0.3);
+            --sidebar-bg: rgba(0, 0, 0, 0.2);
             --radius: 12px;
-            --nav-height: 64px;
-            --sidebar-width: 260px;
+            --nav-height: 70px;
+            --sidebar-width: 280px;
         }
 
-        body.dark-mode {
-            --bg-page: #0f172a;
-            --bg-card: #1e293b;
-            --bg-input: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+        body.light-mode {
+            /* Light Mode */
+            --primary: #800000; /* Maroon remains primary accent */
+            --secondary: #D4AF37; /* Gold remains secondary accent */
+            --white: #000000;
+            --bg-page: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --bg-card: #ffffff;
+            --bg-input: #f1f3f5;
+            --text-main: #343a40;
+            --text-muted: #800000;
+            --border: rgba(128, 0, 0, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --sidebar-bg: rgba(255, 255, 255, 0.5);
         }
 
         * {
@@ -40,73 +52,131 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-page);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.5;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* Intro Splash Screen */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        #intro-text {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: introFadeIn 1.8s ease-out forwards;
+            text-align: center;
+        }
+
+        @keyframes introFadeIn {
+            0% { opacity: 0; transform: scale(0.8); letter-spacing: 20px; }
+            50% { opacity: 1; transform: scale(1.05); letter-spacing: 5px; }
+            100% { opacity: 1; transform: scale(1); letter-spacing: 5px; }
+        }
+
+        .intro-hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
         /* Navbar Styles */
         .navbar {
             height: var(--nav-height);
-            background-color: var(--bg-card);
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            padding: 0 24px;
+            padding: 0 40px;
             position: sticky;
             top: 0;
             z-index: 100;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: background-color 0.5s ease;
         }
 
         .navbar-brand {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-right: 40px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-right: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .navbar-nav {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             list-style: none;
+            flex: 1;
         }
 
         .nav-link {
             text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.2s;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            opacity: 0.8;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--primary);
+            color: var(--secondary);
+            opacity: 1;
         }
 
-        /* Theme Toggle Switch */
+        /* Theme Toggle */
         .theme-toggle {
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .theme-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
+            gap: 10px;
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 44px;
+            width: 50px;
             height: 24px;
         }
 
@@ -123,8 +193,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #cbd5e1;
+            background-color: rgba(0,0,0,0.2);
             transition: .4s;
+            border-radius: 24px;
+            border: 1px solid var(--border);
         }
 
         .slider:before {
@@ -133,9 +205,10 @@
             height: 18px;
             width: 18px;
             left: 3px;
-            bottom: 3px;
-            background-color: white;
+            bottom: 2px;
+            background-color: var(--secondary);
             transition: .4s;
+            border-radius: 50%;
         }
 
         input:checked + .slider {
@@ -143,15 +216,7 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
-        .slider.round {
-            border-radius: 24px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
+            transform: translateX(24px);
         }
 
         /* Layout */
@@ -164,57 +229,68 @@
         /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--bg-card);
+            background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border);
-            padding: 24px;
+            padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            transition: background-color 0.3s, border-color 0.3s;
+            gap: 25px;
+            transition: background-color 0.5s ease;
         }
 
         .sidebar h3 {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.15em;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .event-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .event-item {
-            padding: 12px;
-            background: var(--bg-page);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .event-item:hover {
+            transform: scale(1.08) translateY(-5px);
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            border-color: var(--secondary);
         }
 
         .event-date {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--secondary);
             display: block;
+            margin-bottom: 4px;
         }
 
         .event-title {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             display: block;
-            margin-top: 2px;
+            color: var(--text-main);
         }
 
         /* Content Area */
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 40px;
+            padding: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -222,609 +298,233 @@
 
         .tool-section {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             display: none;
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .tool-section.active {
             display: block;
         }
 
-        /* Existing Board Card Styles (Slightly modified for integration) */
+        /* Homepage Styles */
+        .logo-placeholder {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .logo-box {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-weight: 700;
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: rotate(10deg);
+        }
+
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .welcome-content p {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            opacity: 0.9;
+        }
+
+        /* Board Card Styles */
         .board-card {
             background: var(--bg-card);
+            backdrop-filter: blur(15px);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
             border: 1px solid var(--border);
-            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            transition: background-color 0.5s ease;
         }
 
         header.board-header {
             background-color: var(--primary);
-            color: white;
-            padding: 32px 24px;
+            color: var(--secondary);
+            padding: 40px 30px;
             text-align: center;
+            border-bottom: 1px solid var(--border);
+            opacity: 0.9;
         }
 
         header.board-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
+            font-size: 2rem;
+            font-weight: 800;
         }
 
         header.board-header p {
-            margin-top: 8px;
-            opacity: 0.9;
-            font-size: 0.95rem;
+            margin-top: 10px;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        body.light-mode header.board-header p {
+            color: #fff;
         }
 
         .input-section {
-            padding: 24px;
-            background: var(--bg-card);
+            padding: 30px;
             border-bottom: 1px solid var(--border);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .field-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
 
         label {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
         }
 
         select, input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 12px 16px;
+            padding: 14px 18px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.2s;
             background-color: var(--bg-input);
             color: var(--text-main);
+            transition: all 0.3s;
         }
 
         select:focus, input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
-            border-color: var(--primary);
-            background-color: var(--bg-card);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .input-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        button {
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
         }
 
         .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            grid-column: span 1;
+            background: var(--secondary);
+            color: #000;
+            font-weight: 700;
+            padding: 14px 24px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-hover);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.1);
         }
 
         .btn-secondary {
-            background-color: var(--bg-page);
+            background: var(--bg-input);
             color: var(--text-main);
             border: 1px solid var(--border);
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .btn-secondary:hover {
-            background-color: var(--border);
+            background: rgba(0,0,0,0.1);
         }
 
-        .btn-danger {
-            background-color: transparent;
-            color: #ef4444;
-            font-size: 0.85rem;
-            padding: 6px 12px;
-            border: 1px solid transparent;
-        }
-
-        .btn-danger:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.2);
+        body.light-mode .btn-secondary:hover {
+            background: rgba(0,0,0,0.05);
         }
 
         .stats-box {
             text-align: center;
-            background: rgba(37, 99, 235, 0.1);
-            padding: 16px;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 25px;
             border-radius: var(--radius);
-            margin: 24px;
-            border: 1px solid rgba(37, 99, 235, 0.2);
+            margin: 30px;
+            border: 1px solid var(--border);
         }
 
         .stats-label {
-            font-size: 0.8rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--text-muted);
             font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
 
         .stats-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-            line-height: 1;
-            margin-top: 4px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-main);
         }
 
         .ideas-container {
-            padding: 24px;
-        }
-
-        .ideas-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        #ideaList {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            padding: 30px;
         }
 
         .idea-item {
-            background: var(--bg-page);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            animation: slideIn 0.3s ease-out;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .idea-text {
-            font-weight: 500;
-            color: var(--text-main);
-            font-size: 1.05rem;
-        }
-
-        .idea-author {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
         }
 
         .author-name {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        .error-message {
-            color: #ef4444;
-            font-size: 0.875rem;
-            background: rgba(239, 68, 68, 0.1);
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            margin-top: 12px;
-            display: none;
-            text-align: center;
-        }
-
-        /* Placeholder Tool Styles */
-        .welcome-card {
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .welcome-card h2 {
-            margin-bottom: 16px;
-            color: var(--primary);
-        }
-
-        /* GPA Calculator Theme & Styles */
-        .gpa-theme {
-            --gpa-primary: #800000; /* Dark Maroon */
-            --gpa-secondary: #D4AF37; /* Gold */
-            --gpa-accent: #4A0404;
-        }
-
-        body.dark-mode .gpa-theme {
-            --gpa-primary: #ff4d4d;
-            --gpa-secondary: #ffcc00;
-            --gpa-accent: #800000;
-        }
-
-        #gpa-calculator-tool .board-card {
-            border-color: var(--gpa-primary);
-        }
-
-        #gpa-calculator-tool .board-header {
-            background-color: var(--gpa-primary);
-            color: var(--gpa-secondary);
-            border-bottom: 4px solid var(--gpa-secondary);
-        }
-
-        #gpa-calculator-tool .btn-primary {
-            background-color: var(--gpa-primary);
-            color: #fff;
-            border: 1px solid var(--gpa-secondary);
-        }
-
-        #gpa-calculator-tool .btn-primary:hover {
-            background-color: var(--gpa-accent);
-            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.25);
-        }
-
-        #gpa-calculator-tool h3 {
-            color: var(--gpa-primary);
-            border-left: 4px solid var(--gpa-secondary);
-            padding-left: 12px;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .gpa-section {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .course-row {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 1fr auto;
-            gap: 12px;
-            margin-bottom: 12px;
-            align-items: center;
-        }
-
-        .course-row input, .course-row select {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-
-        #gpa-calculator-tool .stats-box {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gpa-secondary);
-        }
-
-        #gpa-calculator-tool .stats-label, #gpa-calculator-tool .stats-value {
-            color: var(--gpa-primary);
-        }
-
-        .required-gpa-msg {
-            margin-top: 10px;
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        @media (max-width: 600px) {
-            .course-row {
-                grid-template-columns: 1fr;
-                gap: 8px;
-                padding: 12px;
-                background: #f8fafc;
-                border-radius: 8px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            .navbar-nav {
-                display: none;
-            }
-        }
-
-        /* Advanced Study Timer UI Enhancements */
-        :root {
-            --timer-bg: rgba(255, 255, 255, 0.05);
-            --timer-blur: 20px;
-            --timer-accent: #3b82f6;
-            --timer-accent-glow: rgba(59, 130, 246, 0.5);
-            --rest-accent: #10b981;
-            --rest-accent-glow: rgba(16, 185, 129, 0.5);
-        }
-
-        #study-timer-tool .board-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: none;
-            position: relative;
-            overflow: hidden;
-            color: #f8fafc;
-        }
-
-        #study-timer-tool .board-header {
-            background: transparent;
-            border: none;
-        }
-
-        .timer-container-advanced {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            z-index: 2;
-        }
-
-        /* Glassmorphism Card */
-        .glass-timer-card {
-            background: var(--timer-bg);
-            backdrop-filter: blur(var(--timer-blur));
-            -webkit-backdrop-filter: blur(var(--timer-blur));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            width: 320px;
-            height: 320px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .timer-mode-pill {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 0.75rem;
+            color: var(--secondary);
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--timer-accent);
-            transition: all 0.3s ease;
         }
 
+        /* Study Timer Specifics */
         .timer-display-advanced {
-            font-size: 4.5rem;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            background: linear-gradient(to bottom, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin: 10px 0;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+            color: var(--secondary) !important;
+            background: none !important;
+            -webkit-text-fill-color: var(--secondary) !important;
         }
 
-        /* SVG Circular Progress */
-        .progress-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.3s linear, stroke 0.5s ease;
-            stroke-linecap: round;
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
         }
-
-        /* Controls */
-        .advanced-controls {
-            display: flex;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .advanced-btn {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.25rem;
-        }
-
-        .advanced-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .advanced-btn.main-play {
-            width: 72px;
-            height: 72px;
-            background: var(--timer-accent);
-            box-shadow: 0 0 20px var(--timer-accent-glow);
-            border: none;
-        }
-
-        .advanced-btn.main-play:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--timer-accent-glow);
-        }
-
-        /* Background Decorations */
-        .timer-blob {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--timer-accent);
-            filter: blur(80px);
-            opacity: 0.15;
-            border-radius: 50%;
-            z-index: 1;
-            animation: pulse-blob 10s infinite alternate;
-        }
-
-        @keyframes pulse-blob {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-20%, -30%) scale(1.3); }
-        }
-
-        .mode-selector-advanced {
-            display: flex;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .mode-tab {
-            padding: 8px 24px;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #94a3b8;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .mode-tab.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        /* Responsive */
-        @media (max-width: 400px) {
-            .glass-timer-card {
-                width: 280px;
-                height: 280px;
-            }
-            .timer-display-advanced {
-                font-size: 3.5rem;
-            }
-        }
-        /* Falling Leaves Animation */
-        #leavesContainer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .leaf {
-            position: absolute;
-            top: -20px;
-            width: 20px;
-            height: 20px;
-            background: #10b981;
-            border-radius: 2px 20px 2px 20px;
-            opacity: 0.6;
-            filter: blur(1px);
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg) translateX(0);
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(110vh) rotate(720deg) translateX(100px);
-                opacity: 0;
-            }
-        }
-
-        /* Custom Time Input Styles */
-        .custom-time-trigger {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            cursor: pointer;
-            text-decoration: underline;
-            transition: color 0.3s;
-        }
-
-        .custom-time-trigger:hover {
-            color: #fff;
-        }
-
-        .custom-time-input-container {
-            display: none;
-            margin-top: 15px;
-            gap: 8px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .custom-time-input-container input {
-            width: 60px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            text-align: center;
-        }
-
-        .custom-time-input-container button {
-            padding: 4px 12px;
-            font-size: 0.8rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
+
+    <!-- Intro Splash Screen -->
+    <div id="intro-screen">
+        <h1 id="intro-text">Student Toolkit</h1>
+    </div>
 
     <nav class="navbar">
         <div class="navbar-brand">StudentToolkit</div>
@@ -836,10 +536,10 @@
             <li><a class="nav-link" onclick="showTool('about')">About</a></li>
         </ul>
         <div class="theme-toggle">
-            <span class="theme-label">Dark Mode</span>
+            <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.8;">Light Mode</span>
             <label class="switch">
-                <input type="checkbox" id="theme-toggle-checkbox">
-                <span class="slider round"></span>
+                <input type="checkbox" id="theme-checkbox">
+                <span class="slider"></span>
             </label>
         </div>
     </nav>
@@ -849,25 +549,32 @@
             <section>
                 <h3>Upcoming events</h3>
                 <ul class="event-list">
-                    <li class="empty-state" style="padding: 0; font-size: 0.85rem;">No upcoming events.</li>
+                    <li class="event-item">
+                        <span class="event-date">March 15, 2026</span>
+                        <span class="event-title">Cultural event</span>
+                    </li>
+                    <li class="event-item">
+                        <span class="event-date">March 22, 2026</span>
+                        <span class="event-title">Vibe coding presentation</span>
+                    </li>
                 </ul>
             </section>
         </aside>
 
         <main class="content-area">
             
-            <!-- Welcome Section -->
+            <!-- Welcome Section (Homepage) -->
             <div id="welcome-tool" class="tool-section active">
-                <div class="welcome-card">
-                    <h2>Welcome to Student Toolkit</h2>
-                    <p>Select a tool from the navigation bar to get started.</p>
-                    <div style="margin-top: 24px;">
-                        <button class="btn-primary" onclick="showTool('idea-board')" style="display: inline-flex;">Open Idea Board</button>
-                    </div>
+                <div class="logo-placeholder">
+                    <div class="logo-box">USCS Logo Here</div>
+                </div>
+                <div class="welcome-content">
+                    <h1>Welcome to Student Toolkit</h1>
+                    <p>Choose an item from the navigation pane to get started.</p>
                 </div>
             </div>
 
-            <!-- Idea Board Section (Original Program) -->
+            <!-- Idea Board Section -->
             <div id="idea-board-tool" class="tool-section">
                 <div class="board-card">
                     <header class="board-header">
@@ -876,7 +583,7 @@
                     </header>
 
                     <div class="input-section">
-                        <div class="form-grid">
+                        <div style="display: grid; gap: 20px;">
                             <div class="field-group">
                                 <label for="nameSelect">Your Name</label>
                                 <select id="nameSelect">
@@ -900,13 +607,13 @@
                             </div>
                         </div>
 
-                        <div id="errorMessage" class="error-message">
+                        <div id="errorMessage" style="color: #ff4d4d; margin-top: 15px; display: none; text-align: center; font-weight: 600;">
                             Please select your name and type an idea first.
                         </div>
 
-                        <div class="input-actions">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
                             <button id="addIdeaBtn" class="btn-primary">Post Idea</button>
-                            <button id="resetInputBtn" class="btn-secondary">Reset Input</button>
+                            <button id="resetInputBtn" class="btn-secondary">Reset</button>
                         </div>
                     </div>
 
@@ -916,96 +623,55 @@
                     </div>
 
                     <div class="ideas-container">
-                        <div class="ideas-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                             <h2>Idea Feed</h2>
-                            <button id="clearIdeasBtn" class="btn-danger">Clear All</button>
+                            <button id="clearIdeasBtn" style="background: none; border: 1px solid #ff4d4d; color: #ff4d4d; padding: 8px 15px; border-radius: 8px; cursor: pointer;">Clear All</button>
                         </div>
                         
-                        <ul id="ideaList">
-                            <li class="empty-state">No ideas shared yet. Be the first!</li>
+                        <ul id="ideaList" style="list-style: none;">
+                            <li style="text-align: center; font-style: italic; opacity: 0.6;">No ideas shared yet. Be the first!</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <!-- GPA Calculator Section -->
-            <div id="gpa-calculator-tool" class="tool-section gpa-theme">
+            <div id="gpa-calculator-tool" class="tool-section">
                 <div class="board-card">
                     <header class="board-header">
                         <h1>UCSC GPA Calculator</h1>
                         <p>Track your academic progress with ease</p>
                     </header>
 
-                    <!-- Semester GPA Section -->
-                    <div class="gpa-section">
-                        <h3>Semester GPA Calculator</h3>
-                        <div id="semesterCourseList">
-                            <!-- Course rows added here -->
-                        </div>
-                        <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <div style="padding: 30px; border-bottom: 1px solid var(--border);">
+                        <h3 style="color: var(--secondary); margin-bottom: 20px;">Semester GPA Calculator</h3>
+                        <div id="semesterCourseList"></div>
+                        <div style="display: flex; gap: 15px; margin-top: 20px;">
                             <button onclick="addSemesterCourseRow()" class="btn-secondary" style="flex: 1;">+ Add Course</button>
-                            <button onclick="calculateSemesterGPA()" class="btn-primary" style="flex: 1;">Calculate Semester GPA</button>
+                            <button onclick="calculateSemesterGPA()" class="btn-primary" style="flex: 1;">Calculate</button>
                         </div>
-                        <div id="semesterResultBox" class="stats-box" style="display: none; margin-top: 20px;">
-                            <div class="stats-label">Your Semester GPA</div>
+                        <div id="semesterResultBox" class="stats-box" style="display: none;">
+                            <div class="stats-label">Semester GPA</div>
                             <div id="semesterGPAValue" class="stats-value">0.00</div>
                         </div>
                     </div>
 
-                    <!-- Cumulative GPA Section -->
-                    <div class="gpa-section">
-                        <h3>Cumulative GPA Calculator</h3>
-                        <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div style="padding: 30px;">
+                        <h3 style="color: var(--secondary); margin-bottom: 20px;">Cumulative GPA Calculator</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                             <div class="field-group">
-                                <label>Previous Cumulative GPA</label>
-                                <input type="number" id="prevGPA" step="0.01" placeholder="e.g. 3.50">
+                                <label>Previous GPA</label>
+                                <input type="number" id="prevGPA" step="0.01">
                             </div>
                             <div class="field-group">
-                                <label>Total Credits Completed</label>
-                                <input type="number" id="prevCredits" placeholder="e.g. 60">
-                            </div>
-                            <div class="field-group">
-                                <label>Current Semester GPA</label>
-                                <input type="number" id="currGPA" step="0.01" placeholder="e.g. 3.75">
-                            </div>
-                            <div class="field-group">
-                                <label>Current Semester Credits</label>
-                                <input type="number" id="currCredits" placeholder="e.g. 15">
+                                <label>Total Credits</label>
+                                <input type="number" id="prevCredits">
                             </div>
                         </div>
-                        <button onclick="calculateCumulativeGPA()" class="btn-primary" style="width: 100%; margin-top: 20px;">Calculate Cumulative GPA</button>
-                        <div id="cumulativeResultBox" class="stats-box" style="display: none; margin-top: 20px;">
-                            <div class="stats-label">Your Cumulative GPA</div>
+                        <button onclick="calculateCumulativeGPA()" class="btn-primary" style="width: 100%; margin-top: 20px;">Calculate Overall GPA</button>
+                        <div id="cumulativeResultBox" class="stats-box" style="display: none;">
+                            <div class="stats-label">Cumulative GPA</div>
                             <div id="cumulativeGPAValue" class="stats-value">0.00</div>
-                        </div>
-                    </div>
-
-                    <!-- GPA Target Calculator Section -->
-                    <div class="gpa-section" style="border-bottom: none;">
-                        <h3>GPA Target Calculator</h3>
-                        <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                            <div class="field-group">
-                                <label>Current Cumulative GPA</label>
-                                <input type="number" id="targetCurrentGPA" step="0.01" placeholder="e.g. 3.20">
-                            </div>
-                            <div class="field-group">
-                                <label>Total Credits Completed</label>
-                                <input type="number" id="targetCreditsDone" placeholder="e.g. 45">
-                            </div>
-                            <div class="field-group">
-                                <label>Target Cumulative GPA</label>
-                                <input type="number" id="targetGoalGPA" step="0.01" placeholder="e.g. 3.50">
-                            </div>
-                            <div class="field-group">
-                                <label>Upcoming Semester Credits</label>
-                                <input type="number" id="targetUpcomingCredits" placeholder="e.g. 15">
-                            </div>
-                        </div>
-                        <button onclick="calculateTargetGPA()" class="btn-primary" style="width: 100%; margin-top: 20px;">Calculate Required GPA</button>
-                        <div id="targetResultBox" class="stats-box" style="display: none; margin-top: 20px;">
-                            <div class="stats-label">Required Semester GPA</div>
-                            <div id="targetRequiredGPA" class="stats-value">0.00</div>
-                            <div id="targetMessage" class="required-gpa-msg"></div>
                         </div>
                     </div>
                 </div>
@@ -1014,76 +680,39 @@
             <!-- Study Timer Section -->
             <div id="study-timer-tool" class="tool-section">
                 <div class="board-card">
-                    <div class="timer-blob" id="timerBlob"></div>
-                    
-                    <div class="timer-container-advanced">
-                        <div class="mode-selector-advanced">
-                            <div id="studyTab" class="mode-tab active" onclick="setTimerMode('study')">Study</div>
-                            <div id="restTab" class="mode-tab" onclick="setTimerMode('rest')">Rest</div>
-                        </div>
-
-                        <div class="glass-timer-card">
-                            <div id="leavesContainer"></div>
-                            <svg class="progress-ring" width="320" height="320">
-                                <circle
-                                    class="progress-ring__circle"
-                                    stroke="var(--timer-accent)"
-                                    stroke-width="8"
-                                    fill="transparent"
-                                    r="150"
-                                    cx="160"
-                                    cy="160"
-                                    id="timerCircle"
-                                />
-                            </svg>
-                            <div id="timerModeLabel" class="timer-mode-pill">Focus Session</div>
-                            <div id="timerDisplay" class="timer-display-advanced">25:00</div>
-                            
-                            <div class="custom-time-trigger" onclick="toggleCustomTime()">Custom Duration</div>
-                            <div id="customTimeContainer" class="custom-time-input-container">
-                                <input type="number" id="customMinutes" min="1" max="180" value="25">
-                                <button onclick="setCustomTime()" class="btn-primary" style="padding: 4px 10px; width: auto;">Set</button>
-                            </div>
-                        </div>
+                    <div style="padding: 50px; text-align: center; position: relative; overflow: hidden;">
+                        <div id="timerModeLabel" style="color: var(--secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Focus Session</div>
+                        <div id="timerDisplay" class="timer-display-advanced" style="font-size: 6rem; font-weight: 900; color: var(--secondary);">25:00</div>
                         
-                        <div class="advanced-controls">
-                            <button onclick="resetTimer()" class="advanced-btn" title="Reset">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-                            </button>
-                            <button id="startTimerBtn" onclick="toggleTimer()" class="advanced-btn main-play" title="Start/Pause">
-                                <svg id="playIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"></path></svg>
-                                <svg id="pauseIcon" style="display:none" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                            </button>
-                            <button onclick="skipMode()" class="advanced-btn" title="Skip">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l10 8-10 8V4z"></path><path d="M19 5v14"></path></svg>
-                            </button>
+                        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+                            <button onclick="toggleTimer()" id="startTimerBtn" class="btn-primary" style="width: 80px; height: 80px; border-radius: 50%; font-size: 1.5rem;">▶</button>
+                            <button onclick="resetTimer()" class="btn-secondary" style="width: 80px; height: 80px; border-radius: 50%; font-size: 1.5rem;">↺</button>
                         </div>
-                    </div>
 
-                    <div class="input-section" style="background: transparent; border: none; padding-bottom: 40px; position: relative; z-index: 2;">
-                        <p style="font-size: 0.9rem; color: #94a3b8; text-align: center; max-width: 400px; margin: 0 auto; opacity: 0.8;">
-                            "The key is not to prioritize what's on your schedule, but to schedule your priorities."
-                        </p>
+                        <div style="margin-top: 30px; display: flex; justify-content: center; gap: 10px;">
+                            <button onclick="setTimerMode('study')" class="btn-secondary" style="padding: 8px 20px;">Study</button>
+                            <button onclick="setTimerMode('rest')" class="btn-secondary" style="padding: 8px 20px;">Rest</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Course Datalist -->
-            <datalist id="ucscCoursesList"></datalist>
-
             <!-- About Section -->
             <div id="about-tool" class="tool-section">
-                <div class="welcome-card">
-                    <h2>About Student Toolkit</h2>
-                    <p>A comprehensive set of tools designed to help students collaborate and stay organized.</p>
+                <div class="board-card" style="padding: 40px; text-align: center;">
+                    <h2 style="color: var(--secondary); margin-bottom: 20px;">About Student Toolkit</h2>
+                    <p style="color: var(--text-main); opacity: 0.9; font-size: 1.1rem;">A modern, comprehensive set of tools designed to help students collaborate, track their performance, and stay focused.</p>
                 </div>
             </div>
 
         </main>
     </div>
 
+    <!-- Course Datalist -->
+    <datalist id="ucscCoursesList"></datalist>
+
     <script>
-        // --- GPA Calculator Data & Logic ---
+        // Data for Course Autocomplete
         const ucscCourses = [
             "IS1201 - Fundamentals of Information Systems", "IS1202 - Business Mathematics", "IS1203 - Programming for Information Systems",
             "IS1204 - Database Systems", "IS1205 - Systems Analysis and Design", "IS1206 - Business Communication",
@@ -1123,452 +752,194 @@
             "SCS4209 - Advanced Software Engineering", "SCS4212 - Industry Training / Internship"
         ];
 
+        // Theme Toggle Logic
+        const themeCheckbox = document.getElementById('theme-checkbox');
+        themeCheckbox.addEventListener('change', () => {
+            if (themeCheckbox.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Load Theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            themeCheckbox.checked = true;
+            document.body.classList.add('light-mode');
+        }
+
+        // Intro Screen Logic
+        window.addEventListener('load', () => {
+            const datalist = document.getElementById('ucscCoursesList');
+            ucscCourses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                datalist.appendChild(option);
+            });
+
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                intro.classList.add('intro-hidden');
+            }, 2500);
+        });
+
+        // Tool Switching
+        function showTool(toolId) {
+            document.querySelectorAll('.tool-section').forEach(t => t.classList.remove('active'));
+            const selected = document.getElementById(toolId + '-tool');
+            if (selected) selected.classList.add('active');
+
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+                if (l.getAttribute('onclick').includes(toolId)) l.classList.add('active');
+            });
+        }
+
+        // --- GPA CALCULATOR ---
         const gradeValues = {
             'A+': 4.0, 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
             'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'E': 0.0, 'F': 0.0
         };
 
-        // Populate Datalist
-        function initGPACalculator() {
-            const datalist = document.getElementById('ucscCoursesList');
-            if (datalist) {
-                ucscCourses.forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course;
-                    datalist.appendChild(option);
-                });
-            }
-            addSemesterCourseRow();
-        }
-
         function addSemesterCourseRow() {
             const container = document.getElementById('semesterCourseList');
-            if (!container) return;
-            const row = document.createElement('div');
-            row.className = 'course-row';
-            row.innerHTML = `
-                <input type="text" list="ucscCoursesList" placeholder="Course Name/Code" class="course-name">
-                <select class="course-grade">
-                    <option value="">Grade</option>
+            const div = document.createElement('div');
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '2fr 1fr 1fr auto';
+            div.style.gap = '10px';
+            div.style.marginBottom = '10px';
+            div.innerHTML = `
+                <input type="text" list="ucscCoursesList" placeholder="Course" style="padding:10px;">
+                <select class="grade-sel" style="padding:10px;">
                     ${Object.keys(gradeValues).map(g => `<option value="${g}">${g}</option>`).join('')}
                 </select>
-                <input type="number" placeholder="Credits" class="course-credits" min="1" max="15">
-                <button onclick="this.parentElement.remove()" class="btn-danger" style="padding: 8px;">×</button>
+                <input type="number" placeholder="Credits" class="cred-input" style="padding:10px;">
+                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:1.5rem;">×</button>
             `;
-            container.appendChild(row);
+            container.appendChild(div);
         }
 
         function calculateSemesterGPA() {
-            const rows = document.querySelectorAll('#semesterCourseList .course-row');
-            let totalPoints = 0;
-            let totalCredits = 0;
-
-            rows.forEach(row => {
-                const grade = row.querySelector('.course-grade').value;
-                const credits = parseFloat(row.querySelector('.course-credits').value);
-
-                if (grade && !isNaN(credits)) {
-                    totalPoints += gradeValues[grade] * credits;
-                    totalCredits += credits;
+            const grades = document.querySelectorAll('.grade-sel');
+            const credits = document.querySelectorAll('.cred-input');
+            let totalP = 0, totalC = 0;
+            grades.forEach((g, i) => {
+                const c = parseFloat(credits[i].value);
+                if (!isNaN(c)) {
+                    totalP += gradeValues[g.value] * c;
+                    totalC += c;
                 }
             });
-
-            if (totalCredits > 0) {
-                const gpa = totalPoints / totalCredits;
-                document.getElementById('semesterGPAValue').textContent = gpa.toFixed(2);
+            if (totalC > 0) {
+                document.getElementById('semesterGPAValue').textContent = (totalP / totalC).toFixed(2);
                 document.getElementById('semesterResultBox').style.display = 'block';
-            } else {
-                alert('Please enter valid grade and credits for at least one course.');
             }
         }
 
         function calculateCumulativeGPA() {
-            const prevGPA = parseFloat(document.getElementById('prevGPA').value);
-            const prevCredits = parseFloat(document.getElementById('prevCredits').value);
-            const currGPA = parseFloat(document.getElementById('currGPA').value);
-            const currCredits = parseFloat(document.getElementById('currCredits').value);
+            const pG = parseFloat(document.getElementById('prevGPA').value);
+            const pC = parseFloat(document.getElementById('prevCredits').value);
+            const sG = parseFloat(document.getElementById('semesterGPAValue').textContent);
+            
+            if (!isNaN(pG) && !isNaN(pC)) {
+                const credits = document.querySelectorAll('.cred-input');
+                let sC = 0;
+                credits.forEach(c => { if(!isNaN(parseFloat(c.value))) sC += parseFloat(c.value); });
+                if(sC === 0) sC = 15;
 
-            if (!isNaN(prevGPA) && !isNaN(prevCredits) && !isNaN(currGPA) && !isNaN(currCredits)) {
-                const totalPoints = (prevGPA * prevCredits) + (currGPA * currCredits);
-                const totalCredits = prevCredits + currCredits;
-                const cumulativeGPA = totalPoints / totalCredits;
-                
-                document.getElementById('cumulativeGPAValue').textContent = cumulativeGPA.toFixed(2);
+                const totalC = pC + sC; 
+                const totalP = (pG * pC) + (sG * sC);
+                document.getElementById('cumulativeGPAValue').textContent = (totalP / totalC).toFixed(2);
                 document.getElementById('cumulativeResultBox').style.display = 'block';
-            } else {
-                alert('Please fill in all cumulative GPA fields.');
             }
         }
 
-        function calculateTargetGPA() {
-            const currentGPA = parseFloat(document.getElementById('targetCurrentGPA').value);
-            const creditsDone = parseFloat(document.getElementById('targetCreditsDone').value);
-            const goalGPA = parseFloat(document.getElementById('targetGoalGPA').value);
-            const upcomingCredits = parseFloat(document.getElementById('targetUpcomingCredits').value);
-
-            if (!isNaN(currentGPA) && !isNaN(creditsDone) && !isNaN(goalGPA) && !isNaN(upcomingCredits)) {
-                const totalCreditsNeeded = creditsDone + upcomingCredits;
-                const totalPointsNeeded = goalGPA * totalCreditsNeeded;
-                const currentPoints = currentGPA * creditsDone;
-                const requiredPoints = totalPointsNeeded - currentPoints;
-                const requiredSemesterGPA = requiredPoints / upcomingCredits;
-
-                const resultBox = document.getElementById('targetResultBox');
-                const valueDisplay = document.getElementById('targetRequiredGPA');
-                const msgDisplay = document.getElementById('targetMessage');
-
-                valueDisplay.textContent = requiredSemesterGPA.toFixed(2);
-                resultBox.style.display = 'block';
-
-                if (requiredSemesterGPA > 4.0) {
-                    msgDisplay.textContent = "This target is mathematically impossible (requires > 4.0).";
-                    msgDisplay.style.color = "#ef4444";
-                } else if (requiredSemesterGPA <= 0) {
-                    msgDisplay.textContent = "You've already reached this target!";
-                    msgDisplay.style.color = "#10b981";
-                } else {
-                    msgDisplay.textContent = `You need a semester GPA of ${requiredSemesterGPA.toFixed(2)} to reach your target GPA.`;
-                    msgDisplay.style.color = "var(--text-main)";
-                }
-            } else {
-                alert('Please fill in all target calculator fields.');
-            }
-        }
-
-        // --- Advanced Study Timer Logic ---
-        let timerInterval;
-        let leavesInterval;
+        // --- STUDY TIMER ---
         let timeLeft = 25 * 60;
-        let isTimerRunning = false;
-        let currentTimerMode = 'study'; // 'study' or 'rest'
-        let studyDuration = 25 * 60;
-        let restDuration = 5 * 60;
+        let timerRunning = false;
+        let timerInt;
 
-        const circle = document.getElementById('timerCircle');
-        const radius = circle.r.baseVal.value;
-        const circumference = radius * 2 * Math.PI;
-
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = circumference;
-
-        function setProgress(percent) {
-            const offset = circumference - (percent / 100 * circumference);
-            circle.style.strokeDashoffset = offset;
-        }
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('timerDisplay');
-            if (!display) return;
-            
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            display.textContent = timeStr;
-            
-            const total = currentTimerMode === 'study' ? studyDuration : restDuration;
-            const percent = ((total - timeLeft) / total) * 100;
-            setProgress(percent);
-            
-            // Update browser tab title
-            document.title = `${timeStr} - ${currentTimerMode === 'study' ? 'Focus' : 'Rest'}`;
+        function updateTimer() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }
 
         function toggleTimer() {
-            const playIcon = document.getElementById('playIcon');
-            const pauseIcon = document.getElementById('pauseIcon');
-            
-            if (isTimerRunning) {
-                clearInterval(timerInterval);
-                stopLeaves();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                isTimerRunning = false;
+            const btn = document.getElementById('startTimerBtn');
+            if (timerRunning) {
+                clearInterval(timerInt);
+                btn.textContent = '▶';
             } else {
-                isTimerRunning = true;
-                startLeaves();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                timerInterval = setInterval(() => {
+                timerInt = setInterval(() => {
                     timeLeft--;
-                    updateTimerDisplay();
+                    updateTimer();
                     if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        stopLeaves();
-                        isTimerRunning = false;
-                        playIcon.style.display = 'block';
-                        pauseIcon.style.display = 'none';
-                        playTimerEndSound();
-                        showTimerNotification();
+                        clearInterval(timerInt);
+                        alert("Session complete!");
                     }
                 }, 1000);
+                btn.textContent = '⏸';
             }
+            timerRunning = !timerRunning;
         }
 
         function resetTimer() {
-            clearInterval(timerInterval);
-            stopLeaves();
-            isTimerRunning = false;
-            document.getElementById('playIcon').style.display = 'block';
-            document.getElementById('pauseIcon').style.display = 'none';
-            timeLeft = currentTimerMode === 'study' ? studyDuration : restDuration;
-            updateTimerDisplay();
+            clearInterval(timerInt);
+            timerRunning = false;
+            timeLeft = 25 * 60;
+            updateTimer();
+            document.getElementById('startTimerBtn').textContent = '▶';
         }
 
         function setTimerMode(mode) {
-            currentTimerMode = mode;
-            const label = document.getElementById('timerModeLabel');
-            const blob = document.getElementById('timerBlob');
-            const studyTab = document.getElementById('studyTab');
-            const restTab = document.getElementById('restTab');
-            const circle = document.getElementById('timerCircle');
-            
-            if (mode === 'study') {
-                label.textContent = 'Focus Session';
-                label.style.color = 'var(--timer-accent)';
-                blob.style.background = 'var(--timer-accent)';
-                circle.style.stroke = 'var(--timer-accent)';
-                studyTab.classList.add('active');
-                restTab.classList.remove('active');
-            } else {
-                label.textContent = 'Rest Break';
-                label.style.color = 'var(--rest-accent)';
-                blob.style.background = 'var(--rest-accent)';
-                circle.style.stroke = 'var(--rest-accent)';
-                restTab.classList.add('active');
-                studyTab.classList.remove('active');
-            }
+            timeLeft = mode === 'study' ? 25 * 60 : 5 * 60;
+            document.getElementById('timerModeLabel').textContent = mode === 'study' ? 'Focus Session' : 'Rest Break';
             resetTimer();
         }
 
-        function skipMode() {
-            setTimerMode(currentTimerMode === 'study' ? 'rest' : 'study');
-        }
-
-        // --- Custom Time Logic ---
-        function toggleCustomTime() {
-            const container = document.getElementById('customTimeContainer');
-            if (container.style.display === 'flex') {
-                container.style.display = 'none';
-            } else {
-                container.style.display = 'flex';
-                document.getElementById('customMinutes').focus();
-            }
-        }
-
-        function setCustomTime() {
-            const minsInput = document.getElementById('customMinutes');
-            const mins = parseInt(minsInput.value);
-            if (!isNaN(mins) && mins > 0 && mins <= 180) {
-                if (currentTimerMode === 'study') {
-                    studyDuration = mins * 60;
-                } else {
-                    restDuration = mins * 60;
-                }
-                toggleCustomTime();
-                resetTimer();
-            } else {
-                alert("Please enter minutes between 1 and 180.");
-            }
-        }
-
-        // --- Falling Leaves Logic ---
-        function createLeaf() {
-            const container = document.getElementById('leavesContainer');
-            if (!container) return;
-            
-            const leaf = document.createElement('div');
-            leaf.className = 'leaf';
-            
-            // Randomize leaf
-            const startX = Math.random() * 100;
-            const size = 10 + Math.random() * 15;
-            const duration = 3 + Math.random() * 4;
-            const delay = Math.random() * 2;
-            
-            // Random color (Greenery or Autumn)
-            const isAutumn = Math.random() > 0.5;
-            leaf.style.background = isAutumn ? `hsl(${20 + Math.random() * 40}, 70%, 50%)` : `hsl(${100 + Math.random() * 40}, 70%, 40%)`;
-            
-            leaf.style.left = `${startX}%`;
-            leaf.style.width = `${size}px`;
-            leaf.style.height = `${size}px`;
-            leaf.style.animation = `fall ${duration}s linear ${delay}s infinite`;
-            
-            container.appendChild(leaf);
-            
-            // Remove after animation
-            setTimeout(() => {
-                leaf.remove();
-            }, (duration + delay) * 1000);
-        }
-
-        function startLeaves() {
-            if (leavesInterval) return;
-            leavesInterval = setInterval(createLeaf, 300);
-        }
-
-        function stopLeaves() {
-            clearInterval(leavesInterval);
-            leavesInterval = null;
-            // Optionally clear existing leaves
-            const container = document.getElementById('leavesContainer');
-            if (container) container.innerHTML = '';
-        }
-
-        function playTimerEndSound() {
-            try {
-                const context = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = context.createOscillator();
-                const gain = context.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, context.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(440, context.currentTime + 0.5);
-                gain.gain.setValueAtTime(0.5, context.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 1);
-                osc.connect(gain);
-                gain.connect(context.destination);
-                osc.start();
-                osc.stop(context.currentTime + 1);
-            } catch (e) {
-                console.error("Audio playback failed", e);
-            }
-        }
-
-        function showTimerNotification() {
-            const title = currentTimerMode === 'study' ? 'Study session finished!' : 'Break finished!';
-            const body = currentTimerMode === 'study' ? 'Time for a rest.' : 'Back to work!';
-            
-            if (Notification.permission === 'granted') {
-                new Notification(title, { body });
-            } else if (Notification.permission !== 'denied') {
-                Notification.requestPermission();
-            }
-            alert(`${title}\n${body}`);
-        }
-
-        function initStudyTimer() {
-            updateTimerDisplay();
-        }
-
-        // --- Tool Switching Logic ---
-        function showTool(toolId) {
-            // Hide all tools
-            document.querySelectorAll('.tool-section').forEach(tool => {
-                tool.classList.remove('active');
-            });
-
-            // Show selected tool
-            const selectedTool = document.getElementById(toolId + '-tool');
-            if (selectedTool) {
-                selectedTool.classList.add('active');
-            }
-
-            // Update Nav Links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick').includes(toolId)) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        // --- Original Idea Board Logic ---
-        const nameSelect = document.getElementById('nameSelect');
+        // --- IDEA BOARD ---
         const ideaInput = document.getElementById('ideaInput');
-        const addIdeaBtn = document.getElementById('addIdeaBtn');
-        const resetInputBtn = document.getElementById('resetInputBtn');
-        const clearIdeasBtn = document.getElementById('clearIdeasBtn');
+        const nameSelect = document.getElementById('nameSelect');
         const ideaList = document.getElementById('ideaList');
-        const errorMessage = document.getElementById('errorMessage');
-        const ideaCountValue = document.getElementById('ideaCountValue');
+        let ideaCount = 0;
 
-        let totalIdeas = 0;
-
-        function updateCount() {
-            ideaCountValue.textContent = totalIdeas;
-        }
-
-        function resetInputs() {
-            ideaInput.value = '';
-            nameSelect.selectedIndex = 0;
-            errorMessage.style.display = 'none';
-            ideaInput.focus();
-        }
-
-        addIdeaBtn.addEventListener('click', () => {
+        document.getElementById('addIdeaBtn').addEventListener('click', () => {
             const name = nameSelect.value;
             const idea = ideaInput.value.trim();
-
             if (!name || !idea) {
-                errorMessage.style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'block';
                 return;
             }
-
-            errorMessage.style.display = 'none';
-
-            if (totalIdeas === 0) {
-                ideaList.innerHTML = '';
-            }
-
-            totalIdeas++;
-            updateCount();
-
+            document.getElementById('errorMessage').style.display = 'none';
+            if (ideaCount === 0) ideaList.innerHTML = '';
+            ideaCount++;
+            document.getElementById('ideaCountValue').textContent = ideaCount;
             const li = document.createElement('li');
             li.className = 'idea-item';
-            li.innerHTML = `
-                <span class="idea-text">${idea}</span>
-                <span class="idea-author">suggested by <span class="author-name">${name}</span></span>
-            `;
-
+            li.innerHTML = `<span style="font-size:1.1rem; display:block; margin-bottom:5px;">${idea}</span><small>by <span class="author-name">${name}</span></small>`;
             ideaList.insertBefore(li, ideaList.firstChild);
-            resetInputs();
+            ideaInput.value = '';
         });
 
-        resetInputBtn.addEventListener('click', resetInputs);
+        document.getElementById('resetInputBtn').addEventListener('click', () => {
+            ideaInput.value = '';
+            nameSelect.selectedIndex = 0;
+        });
 
-        clearIdeasBtn.addEventListener('click', () => {
-            if (totalIdeas === 0) return;
-            
-            if (confirm('Are you sure you want to clear all ideas?')) {
-                ideaList.innerHTML = '<li class="empty-state">No ideas shared yet. Be the first!</li>';
-                totalIdeas = 0;
-                updateCount();
+        document.getElementById('clearIdeasBtn').addEventListener('click', () => {
+            if (confirm('Clear all ideas?')) {
+                ideaList.innerHTML = '<li style="text-align: center; font-style: italic; opacity: 0.6;">No ideas shared yet. Be the first!</li>';
+                ideaCount = 0;
+                document.getElementById('ideaCountValue').textContent = '0';
             }
         });
 
-        ideaInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                addIdeaBtn.click();
-            }
-        });
-
-        // Initialize Tools
-        window.addEventListener('DOMContentLoaded', () => {
-            initGPACalculator();
-            initStudyTimer();
-
-            // --- Theme Toggle Logic ---
-            const themeToggle = document.getElementById('theme-toggle-checkbox');
-            const body = document.body;
-
-            // Check for saved theme
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                body.classList.add('dark-mode');
-                themeToggle.checked = true;
-            }
-
-            themeToggle.addEventListener('change', () => {
-                if (themeToggle.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('theme', 'light');
-                }
-            });
-        });
+        // Init
+        addSemesterCourseRow();
     </script>
 </body>
 </html>
