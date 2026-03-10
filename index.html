@@ -12,6 +12,7 @@
             --primary-hover: #1d4ed8;
             --bg-page: #f8fafc;
             --bg-card: #ffffff;
+            --bg-input: #f9fafb;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
@@ -19,6 +20,16 @@
             --radius: 12px;
             --nav-height: 64px;
             --sidebar-width: 260px;
+        }
+
+        body.dark-mode {
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5);
         }
 
         * {
@@ -35,12 +46,13 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Navbar Styles */
         .navbar {
             height: var(--nav-height);
-            background-color: #fff;
+            background-color: var(--bg-card);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -48,6 +60,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .navbar-brand {
@@ -76,6 +89,71 @@
             color: var(--primary);
         }
 
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .slider.round {
+            border-radius: 24px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
         /* Layout */
         .main-layout {
             display: flex;
@@ -86,13 +164,14 @@
         /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: #fff;
+            background-color: var(--bg-card);
             border-right: 1px solid var(--border);
             padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .sidebar h3 {
@@ -158,6 +237,7 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             border: 1px solid var(--border);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         header.board-header {
@@ -181,8 +261,9 @@
 
         .input-section {
             padding: 24px;
-            background: #fff;
+            background: var(--bg-card);
             border-bottom: 1px solid var(--border);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .form-grid {
@@ -202,7 +283,7 @@
             color: var(--text-main);
         }
 
-        select, input[type="text"] {
+        select, input[type="text"], input[type="number"] {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid var(--border);
@@ -210,13 +291,14 @@
             font-size: 1rem;
             font-family: inherit;
             transition: all 0.2s;
-            background-color: #f9fafb;
+            background-color: var(--bg-input);
+            color: var(--text-main);
         }
 
-        select:focus, input[type="text"]:focus {
+        select:focus, input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
             border-color: var(--primary);
-            background-color: #fff;
+            background-color: var(--bg-card);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
@@ -254,14 +336,13 @@
         }
 
         .btn-secondary {
-            background-color: #f1f5f9;
+            background-color: var(--bg-page);
             color: var(--text-main);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background-color: #e2e8f0;
-            border-color: #cbd5e1;
+            background-color: var(--border);
         }
 
         .btn-danger {
@@ -273,17 +354,17 @@
         }
 
         .btn-danger:hover {
-            background-color: #fef2f2;
-            border-color: #fee2e2;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
         }
 
         .stats-box {
             text-align: center;
-            background: #eff6ff;
+            background: rgba(37, 99, 235, 0.1);
             padding: 16px;
             border-radius: var(--radius);
             margin: 24px;
-            border: 1px solid #dbeafe;
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .stats-label {
@@ -323,7 +404,7 @@
         }
 
         .idea-item {
-            background: #f8fafc;
+            background: var(--bg-page);
             border: 1px solid var(--border);
             padding: 16px;
             border-radius: 10px;
@@ -331,6 +412,7 @@
             flex-direction: column;
             gap: 4px;
             animation: slideIn 0.3s ease-out;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         @keyframes slideIn {
@@ -364,10 +446,10 @@
         .error-message {
             color: #ef4444;
             font-size: 0.875rem;
-            background: #fef2f2;
+            background: rgba(239, 68, 68, 0.1);
             padding: 10px;
             border-radius: 6px;
-            border: 1px solid #fee2e2;
+            border: 1px solid rgba(239, 68, 68, 0.2);
             margin-top: 12px;
             display: none;
             text-align: center;
@@ -375,11 +457,12 @@
 
         /* Placeholder Tool Styles */
         .welcome-card {
-            background: #fff;
+            background: var(--bg-card);
             padding: 40px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .welcome-card h2 {
@@ -392,6 +475,12 @@
             --gpa-primary: #800000; /* Dark Maroon */
             --gpa-secondary: #D4AF37; /* Gold */
             --gpa-accent: #4A0404;
+        }
+
+        body.dark-mode .gpa-theme {
+            --gpa-primary: #ff4d4d;
+            --gpa-secondary: #ffcc00;
+            --gpa-accent: #800000;
         }
 
         #gpa-calculator-tool .board-card {
@@ -444,7 +533,7 @@
         }
 
         #gpa-calculator-tool .stats-box {
-            background: #fffcf0;
+            background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gpa-secondary);
         }
 
@@ -746,6 +835,13 @@
             <li><a class="nav-link" onclick="showTool('study-timer')">Study Timer</a></li>
             <li><a class="nav-link" onclick="showTool('about')">About</a></li>
         </ul>
+        <div class="theme-toggle">
+            <span class="theme-label">Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle-checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
     </nav>
 
     <div class="main-layout">
@@ -1451,6 +1547,27 @@
         window.addEventListener('DOMContentLoaded', () => {
             initGPACalculator();
             initStudyTimer();
+
+            // --- Theme Toggle Logic ---
+            const themeToggle = document.getElementById('theme-toggle-checkbox');
+            const body = document.body;
+
+            // Check for saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.checked = true;
+            }
+
+            themeToggle.addEventListener('change', () => {
+                if (themeToggle.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
         });
     </script>
 </body>
