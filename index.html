@@ -476,6 +476,57 @@
                 display: none;
             }
         }
+
+        /* Study Timer Styles */
+        .timer-card {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .timer-display {
+            font-size: 6rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+            margin: 20px 0;
+            letter-spacing: -2px;
+        }
+
+        .timer-mode {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .timer-btn {
+            min-width: 120px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s linear;
+        }
     </style>
 </head>
 <body>
@@ -486,6 +537,7 @@
             <li><a class="nav-link active" onclick="showTool('welcome')">Home</a></li>
             <li><a class="nav-link" onclick="showTool('idea-board')">Idea Board</a></li>
             <li><a class="nav-link" onclick="showTool('gpa-calculator')">GPA Calculator</a></li>
+            <li><a class="nav-link" onclick="showTool('study-timer')">Study Timer</a></li>
             <li><a class="nav-link" onclick="showTool('about')">About</a></li>
         </ul>
     </nav>
@@ -657,6 +709,38 @@
                 </div>
             </div>
 
+            <!-- Study Timer Section -->
+            <div id="study-timer-tool" class="tool-section">
+                <div class="board-card">
+                    <header class="board-header">
+                        <h1>Study Timer</h1>
+                        <p>Boost your productivity with the Pomodoro technique</p>
+                    </header>
+
+                    <div class="timer-card">
+                        <div id="timerModeLabel" class="timer-mode">Focus Session</div>
+                        <div id="timerDisplay" class="timer-display">25:00</div>
+                        
+                        <div class="timer-controls">
+                            <button id="startTimerBtn" onclick="toggleTimer()" class="btn-primary timer-btn">Start</button>
+                            <button onclick="setTimerMode('rest')" class="btn-secondary timer-btn">Rest</button>
+                            <button onclick="setTimerMode('study')" class="btn-secondary timer-btn">Study</button>
+                            <button onclick="resetTimer()" class="btn-secondary timer-btn">Reset</button>
+                        </div>
+
+                        <div class="progress-container">
+                            <div id="progressBar" class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-section" style="border-top: 1px solid var(--border); border-bottom: none;">
+                        <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                            The Pomodoro technique uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Course Datalist -->
             <datalist id="ucscCoursesList"></datalist>
 
@@ -822,6 +906,101 @@
             } else {
                 alert('Please fill in all target calculator fields.');
             }
+        }
+
+        // --- Study Timer Logic ---
+        let timerInterval;
+        let timeLeft = 25 * 60;
+        let isTimerRunning = false;
+        let currentTimerMode = 'study'; // 'study' or 'rest'
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timerDisplay');
+            const progress = document.getElementById('progressBar');
+            if (!display || !progress) return;
+            
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            display.textContent = timeStr;
+            
+            const total = currentTimerMode === 'study' ? 25 * 60 : 5 * 60;
+            const percent = ((total - timeLeft) / total) * 100;
+            progress.style.width = `${percent}%`;
+            
+            // Update browser tab title
+            document.title = `${timeStr} - ${currentTimerMode === 'study' ? 'Focus' : 'Rest'}`;
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('startTimerBtn');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                btn.textContent = 'Start';
+                isTimerRunning = false;
+            } else {
+                isTimerRunning = true;
+                btn.textContent = 'Pause';
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        btn.textContent = 'Start';
+                        playTimerEndSound();
+                        showTimerNotification();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            const btn = document.getElementById('startTimerBtn');
+            if (btn) btn.textContent = 'Start';
+            timeLeft = currentTimerMode === 'study' ? 25 * 60 : 5 * 60;
+            updateTimerDisplay();
+        }
+
+        function setTimerMode(mode) {
+            currentTimerMode = mode;
+            const label = document.getElementById('timerModeLabel');
+            if (label) label.textContent = mode === 'study' ? 'Focus Session' : 'Rest Break';
+            resetTimer();
+        }
+
+        function playTimerEndSound() {
+            try {
+                const context = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = context.createOscillator();
+                const gain = context.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, context.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(440, context.currentTime + 0.5);
+                gain.gain.setValueAtTime(0.5, context.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 1);
+                osc.connect(gain);
+                gain.connect(context.destination);
+                osc.start();
+                osc.stop(context.currentTime + 1);
+            } catch (e) {
+                console.error("Audio playback failed", e);
+            }
+        }
+
+        function showTimerNotification() {
+            const title = currentTimerMode === 'study' ? 'Study session finished!' : 'Break finished!';
+            const body = currentTimerMode === 'study' ? 'Time for a rest.' : 'Back to work!';
+            
+            if (Notification.permission === 'granted') {
+                new Notification(title, { body });
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+            alert(`${title}\n${body}`);
         }
 
         // --- Tool Switching Logic ---
