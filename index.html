@@ -387,6 +387,87 @@
             color: var(--primary);
         }
 
+        /* GPA Calculator Theme & Styles */
+        .gpa-theme {
+            --gpa-primary: #800000; /* Dark Maroon */
+            --gpa-secondary: #D4AF37; /* Gold */
+            --gpa-accent: #4A0404;
+        }
+
+        #gpa-calculator-tool .board-card {
+            border-color: var(--gpa-primary);
+        }
+
+        #gpa-calculator-tool .board-header {
+            background-color: var(--gpa-primary);
+            color: var(--gpa-secondary);
+            border-bottom: 4px solid var(--gpa-secondary);
+        }
+
+        #gpa-calculator-tool .btn-primary {
+            background-color: var(--gpa-primary);
+            color: #fff;
+            border: 1px solid var(--gpa-secondary);
+        }
+
+        #gpa-calculator-tool .btn-primary:hover {
+            background-color: var(--gpa-accent);
+            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.25);
+        }
+
+        #gpa-calculator-tool h3 {
+            color: var(--gpa-primary);
+            border-left: 4px solid var(--gpa-secondary);
+            padding-left: 12px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .gpa-section {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .course-row {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .course-row input, .course-row select {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        #gpa-calculator-tool .stats-box {
+            background: #fffcf0;
+            border: 1px solid var(--gpa-secondary);
+        }
+
+        #gpa-calculator-tool .stats-label, #gpa-calculator-tool .stats-value {
+            color: var(--gpa-primary);
+        }
+
+        .required-gpa-msg {
+            margin-top: 10px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        @media (max-width: 600px) {
+            .course-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 12px;
+                background: #f8fafc;
+                border-radius: 8px;
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
@@ -404,6 +485,7 @@
         <ul class="navbar-nav">
             <li><a class="nav-link active" onclick="showTool('welcome')">Home</a></li>
             <li><a class="nav-link" onclick="showTool('idea-board')">Idea Board</a></li>
+            <li><a class="nav-link" onclick="showTool('gpa-calculator')">GPA Calculator</a></li>
             <li><a class="nav-link" onclick="showTool('about')">About</a></li>
         </ul>
     </nav>
@@ -492,6 +574,92 @@
                 </div>
             </div>
 
+            <!-- GPA Calculator Section -->
+            <div id="gpa-calculator-tool" class="tool-section gpa-theme">
+                <div class="board-card">
+                    <header class="board-header">
+                        <h1>UCSC GPA Calculator</h1>
+                        <p>Track your academic progress with ease</p>
+                    </header>
+
+                    <!-- Semester GPA Section -->
+                    <div class="gpa-section">
+                        <h3>Semester GPA Calculator</h3>
+                        <div id="semesterCourseList">
+                            <!-- Course rows added here -->
+                        </div>
+                        <div style="display: flex; gap: 12px; margin-top: 16px;">
+                            <button onclick="addSemesterCourseRow()" class="btn-secondary" style="flex: 1;">+ Add Course</button>
+                            <button onclick="calculateSemesterGPA()" class="btn-primary" style="flex: 1;">Calculate Semester GPA</button>
+                        </div>
+                        <div id="semesterResultBox" class="stats-box" style="display: none; margin-top: 20px;">
+                            <div class="stats-label">Your Semester GPA</div>
+                            <div id="semesterGPAValue" class="stats-value">0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Cumulative GPA Section -->
+                    <div class="gpa-section">
+                        <h3>Cumulative GPA Calculator</h3>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="field-group">
+                                <label>Previous Cumulative GPA</label>
+                                <input type="number" id="prevGPA" step="0.01" placeholder="e.g. 3.50">
+                            </div>
+                            <div class="field-group">
+                                <label>Total Credits Completed</label>
+                                <input type="number" id="prevCredits" placeholder="e.g. 60">
+                            </div>
+                            <div class="field-group">
+                                <label>Current Semester GPA</label>
+                                <input type="number" id="currGPA" step="0.01" placeholder="e.g. 3.75">
+                            </div>
+                            <div class="field-group">
+                                <label>Current Semester Credits</label>
+                                <input type="number" id="currCredits" placeholder="e.g. 15">
+                            </div>
+                        </div>
+                        <button onclick="calculateCumulativeGPA()" class="btn-primary" style="width: 100%; margin-top: 20px;">Calculate Cumulative GPA</button>
+                        <div id="cumulativeResultBox" class="stats-box" style="display: none; margin-top: 20px;">
+                            <div class="stats-label">Your Cumulative GPA</div>
+                            <div id="cumulativeGPAValue" class="stats-value">0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- GPA Target Calculator Section -->
+                    <div class="gpa-section" style="border-bottom: none;">
+                        <h3>GPA Target Calculator</h3>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="field-group">
+                                <label>Current Cumulative GPA</label>
+                                <input type="number" id="targetCurrentGPA" step="0.01" placeholder="e.g. 3.20">
+                            </div>
+                            <div class="field-group">
+                                <label>Total Credits Completed</label>
+                                <input type="number" id="targetCreditsDone" placeholder="e.g. 45">
+                            </div>
+                            <div class="field-group">
+                                <label>Target Cumulative GPA</label>
+                                <input type="number" id="targetGoalGPA" step="0.01" placeholder="e.g. 3.50">
+                            </div>
+                            <div class="field-group">
+                                <label>Upcoming Semester Credits</label>
+                                <input type="number" id="targetUpcomingCredits" placeholder="e.g. 15">
+                            </div>
+                        </div>
+                        <button onclick="calculateTargetGPA()" class="btn-primary" style="width: 100%; margin-top: 20px;">Calculate Required GPA</button>
+                        <div id="targetResultBox" class="stats-box" style="display: none; margin-top: 20px;">
+                            <div class="stats-label">Required Semester GPA</div>
+                            <div id="targetRequiredGPA" class="stats-value">0.00</div>
+                            <div id="targetMessage" class="required-gpa-msg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Datalist -->
+            <datalist id="ucscCoursesList"></datalist>
+
             <!-- About Section -->
             <div id="about-tool" class="tool-section">
                 <div class="welcome-card">
@@ -504,6 +672,158 @@
     </div>
 
     <script>
+        // --- GPA Calculator Data & Logic ---
+        const ucscCourses = [
+            "IS1201 - Fundamentals of Information Systems", "IS1202 - Business Mathematics", "IS1203 - Programming for Information Systems",
+            "IS1204 - Database Systems", "IS1205 - Systems Analysis and Design", "IS1206 - Business Communication",
+            "IS1207 - Web Technologies", "EN1201 - English Communication Skills I", "EN1202 - English Communication Skills II",
+            "IS1101 - Introduction to Information Systems", "IS1102 - Principles of Management", "IS1104 - Accounting for Information Systems",
+            "IS1105 - Organizational Behavior", "IS1106 - Business Statistics", "EN1101 - Professional Communication",
+            "IS2202 - Systems Analysis and Design", "IS2203 - Enterprise Information Systems", "IS2204 - IT Project Management",
+            "IS2205 - Information Security Management", "IS2206 - Business Intelligence", "IS2207 - E-Commerce Systems",
+            "IS2101 - Data Structures for IS", "IS2103 - Database Management Systems", "IS2104 - Web Information Systems",
+            "IS2105 - Human Computer Interaction", "IS2106 - IT Governance", "IS2107 - Decision Support Systems",
+            "IS3101 - Enterprise Architecture", "IS3102 - Knowledge Management Systems", "IS3103 - Data Analytics",
+            "IS3104 - IT Strategy", "IS3105 - Information Systems Audit", "IS3106 - Cloud Information Systems",
+            "IS3107 - Digital Business", "IS3108 - IT Innovation", "IS3109 - Advanced Database Systems",
+            "IS3111 - Business Process Management", "IS3112 - IT Risk Management", "IS3113 - Data Warehousing",
+            "IS3114 - Information Retrieval", "IS3115 - Mobile Information Systems", "IS3116 - Social Media Analytics",
+            "IS3117 - Digital Transformation", "IS3118 - Research Methods in Information Systems",
+            "IS4102 - Final Year Research Project I", "IS4103 - Final Year Research Project II", "IS4105 - Advanced Information Systems",
+            "IS4106 - Strategic Information Systems", "IS4107 - Emerging Technologies", "IS4108 - Enterprise Data Management",
+            "IS4109 - Industry Internship", "SCS1301 - Data Structures and Program Design", "SCS1302 - Discrete Mathematics",
+            "SCS1303 - Introduction to Software Engineering", "SCS1304 - Problem Solving Strategies", "SCS1305 - Computer Organization",
+            "SCS1306 - Fundamentals of Web Development", "SCS1307 - Computer Systems Fundamentals", "ENH1301 - English Communication Skills I",
+            "ENH1302 - English Communication Skills II", "SCS1201 - Introduction to Programming", "SCS1203 - Mathematics for Computing",
+            "SCS1204 - Database Fundamentals", "SCS1205 - Object Oriented Programming", "SCS1206 - Data Communication and Networks",
+            "SCS1207 - Operating Systems Concepts", "ENH1201 - Professional Communication", "SCS2302 - Data Structures and Algorithms",
+            "SCS2303 - Database Management Systems", "SCS2304 - Software Engineering", "SCS2306 - Computer Networks",
+            "SCS2307 - Operating Systems", "SCS2308 - Computer Architecture", "SCS2309 - Theory of Computation",
+            "SCS2201 - Probability and Statistics", "SCS2203 - Web Application Development", "SCS2204 - Human Computer Interaction",
+            "SCS2205 - Distributed Systems", "SCS2206 - Information Security", "SCS2207 - Artificial Intelligence",
+            "SCS2208 - Mobile Application Development", "SCS3201 - Advanced Algorithms", "SCS3202 - Machine Learning",
+            "SCS3203 - Computer Graphics", "SCS3204 - Data Mining", "SCS3205 - Natural Language Processing",
+            "SCS3206 - Parallel Computing", "SCS3207 - Cloud Computing", "SCS3208 - Software Architecture",
+            "SCS3209 - Big Data Technologies", "SCS3210 - Advanced Databases", "SCS3211 - Cyber Security",
+            "SCS3212 - Digital Image Processing", "SCS3213 - Robotics", "SCS3214 - Advanced Networking",
+            "SCS3215 - Research Methods in Computing", "SCS4201 - Final Year Research Project I", "SCS4202 - Final Year Research Project II",
+            "SCS4203 - Advanced Topics in Computer Science", "SCS4204 - High Performance Computing", "SCS4205 - Data Science",
+            "SCS4206 - Advanced Artificial Intelligence", "SCS4207 - Blockchain Technologies", "SCS4208 - Internet of Things",
+            "SCS4209 - Advanced Software Engineering", "SCS4212 - Industry Training / Internship"
+        ];
+
+        const gradeValues = {
+            'A+': 4.0, 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+            'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'E': 0.0, 'F': 0.0
+        };
+
+        // Populate Datalist
+        function initGPACalculator() {
+            const datalist = document.getElementById('ucscCoursesList');
+            if (datalist) {
+                ucscCourses.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course;
+                    datalist.appendChild(option);
+                });
+            }
+            addSemesterCourseRow();
+        }
+
+        function addSemesterCourseRow() {
+            const container = document.getElementById('semesterCourseList');
+            if (!container) return;
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.innerHTML = `
+                <input type="text" list="ucscCoursesList" placeholder="Course Name/Code" class="course-name">
+                <select class="course-grade">
+                    <option value="">Grade</option>
+                    ${Object.keys(gradeValues).map(g => `<option value="${g}">${g}</option>`).join('')}
+                </select>
+                <input type="number" placeholder="Credits" class="course-credits" min="1" max="15">
+                <button onclick="this.parentElement.remove()" class="btn-danger" style="padding: 8px;">×</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function calculateSemesterGPA() {
+            const rows = document.querySelectorAll('#semesterCourseList .course-row');
+            let totalPoints = 0;
+            let totalCredits = 0;
+
+            rows.forEach(row => {
+                const grade = row.querySelector('.course-grade').value;
+                const credits = parseFloat(row.querySelector('.course-credits').value);
+
+                if (grade && !isNaN(credits)) {
+                    totalPoints += gradeValues[grade] * credits;
+                    totalCredits += credits;
+                }
+            });
+
+            if (totalCredits > 0) {
+                const gpa = totalPoints / totalCredits;
+                document.getElementById('semesterGPAValue').textContent = gpa.toFixed(2);
+                document.getElementById('semesterResultBox').style.display = 'block';
+            } else {
+                alert('Please enter valid grade and credits for at least one course.');
+            }
+        }
+
+        function calculateCumulativeGPA() {
+            const prevGPA = parseFloat(document.getElementById('prevGPA').value);
+            const prevCredits = parseFloat(document.getElementById('prevCredits').value);
+            const currGPA = parseFloat(document.getElementById('currGPA').value);
+            const currCredits = parseFloat(document.getElementById('currCredits').value);
+
+            if (!isNaN(prevGPA) && !isNaN(prevCredits) && !isNaN(currGPA) && !isNaN(currCredits)) {
+                const totalPoints = (prevGPA * prevCredits) + (currGPA * currCredits);
+                const totalCredits = prevCredits + currCredits;
+                const cumulativeGPA = totalPoints / totalCredits;
+                
+                document.getElementById('cumulativeGPAValue').textContent = cumulativeGPA.toFixed(2);
+                document.getElementById('cumulativeResultBox').style.display = 'block';
+            } else {
+                alert('Please fill in all cumulative GPA fields.');
+            }
+        }
+
+        function calculateTargetGPA() {
+            const currentGPA = parseFloat(document.getElementById('targetCurrentGPA').value);
+            const creditsDone = parseFloat(document.getElementById('targetCreditsDone').value);
+            const goalGPA = parseFloat(document.getElementById('targetGoalGPA').value);
+            const upcomingCredits = parseFloat(document.getElementById('targetUpcomingCredits').value);
+
+            if (!isNaN(currentGPA) && !isNaN(creditsDone) && !isNaN(goalGPA) && !isNaN(upcomingCredits)) {
+                const totalCreditsNeeded = creditsDone + upcomingCredits;
+                const totalPointsNeeded = goalGPA * totalCreditsNeeded;
+                const currentPoints = currentGPA * creditsDone;
+                const requiredPoints = totalPointsNeeded - currentPoints;
+                const requiredSemesterGPA = requiredPoints / upcomingCredits;
+
+                const resultBox = document.getElementById('targetResultBox');
+                const valueDisplay = document.getElementById('targetRequiredGPA');
+                const msgDisplay = document.getElementById('targetMessage');
+
+                valueDisplay.textContent = requiredSemesterGPA.toFixed(2);
+                resultBox.style.display = 'block';
+
+                if (requiredSemesterGPA > 4.0) {
+                    msgDisplay.textContent = "This target is mathematically impossible (requires > 4.0).";
+                    msgDisplay.style.color = "#ef4444";
+                } else if (requiredSemesterGPA <= 0) {
+                    msgDisplay.textContent = "You've already reached this target!";
+                    msgDisplay.style.color = "#10b981";
+                } else {
+                    msgDisplay.textContent = `You need a semester GPA of ${requiredSemesterGPA.toFixed(2)} to reach your target GPA.`;
+                    msgDisplay.style.color = "var(--text-main)";
+                }
+            } else {
+                alert('Please fill in all target calculator fields.');
+            }
+        }
+
         // --- Tool Switching Logic ---
         function showTool(toolId) {
             // Hide all tools
@@ -595,6 +915,9 @@
                 addIdeaBtn.click();
             }
         });
+
+        // Initialize GPA Calculator
+        window.addEventListener('DOMContentLoaded', initGPACalculator);
     </script>
 </body>
 </html>
