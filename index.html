@@ -44,6 +44,14 @@
             --sidebar-bg: rgba(255, 255, 255, 0.5);
         }
 
+        /* Additional styles for Dark Mode select box fix */
+        body:not(.light-mode) select,
+        body:not(.light-mode) .custom-select-container .select-box,
+        body:not(.light-mode) .custom-select-container .options-list {
+            background-color: #a52a2a !important; /* Light Maroon */
+            color: #ffffff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -56,10 +64,10 @@
             background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.5;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden;
             transition: background 0.5s ease, color 0.5s ease;
         }
 
@@ -96,6 +104,13 @@
             100% { opacity: 1; transform: scale(1); letter-spacing: 5px; }
         }
 
+        @media (max-width: 768px) {
+            #intro-text {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+        }
+
         .intro-hidden {
             opacity: 0;
             visibility: hidden;
@@ -103,46 +118,54 @@
 
         /* Navbar Styles */
         .navbar {
-            height: var(--nav-height);
+            min-height: var(--nav-height);
             background-color: var(--nav-bg);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            padding: 0 40px;
+            padding: 10px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
             transition: background-color 0.5s ease;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .navbar-brand {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: var(--secondary);
-            margin-right: 50px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .navbar-nav {
             display: flex;
-            gap: 30px;
+            gap: 15px;
             list-style: none;
-            flex: 1;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .navbar-nav::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
         }
 
         .nav-link {
             text-decoration: none;
             color: var(--text-main);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             position: relative;
             opacity: 0.8;
+            white-space: nowrap;
         }
 
         .nav-link::after {
@@ -176,8 +199,8 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 24px;
+            width: 44px;
+            height: 20px;
         }
 
         .switch input {
@@ -195,16 +218,16 @@
             bottom: 0;
             background-color: rgba(0,0,0,0.2);
             transition: .4s;
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid var(--border);
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
+            height: 14px;
+            width: 14px;
+            left: 2px;
             bottom: 2px;
             background-color: var(--secondary);
             transition: .4s;
@@ -223,7 +246,13 @@
         .main-layout {
             display: flex;
             flex: 1;
-            overflow: hidden;
+            flex-direction: row;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                flex-direction: column;
+            }
         }
 
         /* Sidebar Styles */
@@ -237,6 +266,15 @@
             flex-direction: column;
             gap: 25px;
             transition: background-color 0.5s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 20px;
+            }
         }
 
         .sidebar h3 {
@@ -255,6 +293,17 @@
             gap: 15px;
         }
 
+        @media (max-width: 1024px) {
+            .event-list {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            .event-item {
+                min-width: 200px;
+            }
+        }
+
         .event-item {
             padding: 15px;
             background: var(--bg-card);
@@ -265,7 +314,7 @@
         }
 
         .event-item:hover {
-            transform: scale(1.08) translateY(-5px);
+            transform: scale(1.05) translateY(-2px);
             background: rgba(212, 175, 55, 0.15);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
             border-color: var(--secondary);
@@ -289,11 +338,11 @@
         /* Content Area */
         .content-area {
             flex: 1;
-            overflow-y: auto;
-            padding: 50px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-y: auto;
         }
 
         .tool-section {
@@ -321,8 +370,8 @@
         }
 
         .logo-box {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border: 2px dashed var(--secondary);
             border-radius: 50%;
             display: flex;
@@ -331,9 +380,19 @@
             color: var(--secondary);
             font-weight: 700;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: var(--bg-card);
             transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-content h1 {
+                font-size: 2rem !important;
+            }
+            .welcome-content p {
+                font-size: 1rem !important;
+            }
         }
 
         .logo-box:hover {
@@ -368,19 +427,20 @@
             overflow: hidden;
             border: 1px solid var(--border);
             transition: background-color 0.5s ease;
+            width: 100%;
         }
 
         header.board-header {
             background-color: var(--primary);
             color: var(--secondary);
-            padding: 40px 30px;
+            padding: 30px 20px;
             text-align: center;
             border-bottom: 1px solid var(--border);
             opacity: 0.9;
         }
 
         header.board-header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
         }
 
@@ -388,19 +448,16 @@
             margin-top: 10px;
             color: #fff;
             opacity: 0.8;
-        }
-
-        body.light-mode header.board-header p {
-            color: #fff;
+            font-size: 0.9rem;
         }
 
         .input-section {
-            padding: 30px;
+            padding: 20px;
             border-bottom: 1px solid var(--border);
         }
 
         label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -408,7 +465,59 @@
             display: block;
         }
 
-        select, input[type="text"], input[type="number"] {
+        /* Custom Select Styles */
+        .custom-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-box {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .select-box::after {
+            content: '▼';
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .options-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 5px;
+            z-index: 200;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+
+        .option-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-item:hover {
+            background-color: rgba(212, 175, 55, 0.2);
+        }
+
+        input[type="text"], input[type="number"] {
             width: 100%;
             padding: 14px 18px;
             border: 1px solid var(--border);
@@ -434,6 +543,7 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .btn-primary:hover {
@@ -450,22 +560,15 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .btn-secondary:hover {
-            background: rgba(0,0,0,0.05);
+            font-size: 0.9rem;
         }
 
         .stats-box {
             text-align: center;
             background: rgba(212, 175, 55, 0.1);
-            padding: 25px;
+            padding: 20px;
             border-radius: var(--radius);
-            margin: 30px;
+            margin: 20px;
             border: 1px solid var(--border);
         }
 
@@ -473,17 +576,17 @@
             color: var(--text-muted);
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
 
         .stats-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--text-main);
         }
 
         .ideas-container {
-            padding: 30px;
+            padding: 20px;
         }
 
         .idea-item {
@@ -492,11 +595,54 @@
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 15px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .delete-idea-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .delete-idea-btn:hover {
+            opacity: 1;
         }
 
         .author-name {
             color: var(--secondary);
             font-weight: 700;
+        }
+
+        /* GPA Calculator Grid */
+        @media (max-width: 600px) {
+            .course-row {
+                grid-template-columns: 1fr !important;
+                gap: 5px !important;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 10px;
+                margin-bottom: 15px !important;
+            }
+            .course-row button {
+                justify-self: end;
+            }
+        }
+
+        /* Timer Styles */
+        @media (max-width: 480px) {
+            #timerDisplay {
+                font-size: 4rem !important;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 10px 15px;
+            }
         }
 
         /* Study Timer Specifics */
@@ -905,40 +1051,109 @@
         const ideaInput = document.getElementById('ideaInput');
         const nameSelect = document.getElementById('nameSelect');
         const ideaList = document.getElementById('ideaList');
-        let ideaCount = 0;
+        const errorMessage = document.getElementById('errorMessage');
+        let ideas = JSON.parse(localStorage.getItem('sharedIdeas')) || [];
+
+        function normalizeIdea(text) {
+            return text.toLowerCase()
+                       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"'!]/g, "")
+                       .replace(/\s+/g, " ")
+                       .trim();
+        }
+
+        function renderIdeas() {
+            ideaList.innerHTML = '';
+            if (ideas.length === 0) {
+                ideaList.innerHTML = '<li style="text-align: center; font-style: italic; opacity: 0.6;">No ideas shared yet. Be the first!</li>';
+            } else {
+                ideas.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'idea-item';
+                    
+                    const ideaSpan = document.createElement('span');
+                    ideaSpan.style.cssText = "font-size:1.1rem; display:block; margin-bottom:5px;";
+                    ideaSpan.textContent = item.text; // Securely set as plain text
+                    
+                    const metaSmall = document.createElement('small');
+                    metaSmall.innerHTML = `by <span class="author-name"></span>`;
+                    metaSmall.querySelector('.author-name').textContent = item.author;
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-idea-btn';
+                    deleteBtn.innerHTML = '&times;';
+                    deleteBtn.onclick = () => deleteIdea(index);
+                    
+                    li.appendChild(ideaSpan);
+                    li.appendChild(metaSmall);
+                    li.appendChild(deleteBtn);
+                    ideaList.insertBefore(li, ideaList.firstChild);
+                });
+            }
+            document.getElementById('ideaCountValue').textContent = ideas.length;
+        }
+
+        function deleteIdea(index) {
+            ideas.splice(index, 1);
+            localStorage.setItem('sharedIdeas', JSON.stringify(ideas));
+            renderIdeas();
+        }
 
         document.getElementById('addIdeaBtn').addEventListener('click', () => {
             const name = nameSelect.value;
-            const idea = ideaInput.value.trim();
-            if (!name || !idea) {
-                document.getElementById('errorMessage').style.display = 'block';
+            const rawIdea = ideaInput.value.trim();
+            
+            if (!name || !rawIdea) {
+                errorMessage.textContent = "Please select your name and type an idea first.";
+                errorMessage.style.display = 'block';
                 return;
             }
-            document.getElementById('errorMessage').style.display = 'none';
-            if (ideaCount === 0) ideaList.innerHTML = '';
-            ideaCount++;
-            document.getElementById('ideaCountValue').textContent = ideaCount;
-            const li = document.createElement('li');
-            li.className = 'idea-item';
-            li.innerHTML = `<span style="font-size:1.1rem; display:block; margin-bottom:5px;">${idea}</span><small>by <span class="author-name">${name}</span></small>`;
-            ideaList.insertBefore(li, ideaList.firstChild);
+
+            // Word and Character Limits
+            const words = rawIdea.split(/\s+/).filter(w => w.length > 0);
+            if (words.length > 100) {
+                errorMessage.textContent = "Idea cannot exceed 100 words.";
+                errorMessage.style.display = 'block';
+                return;
+            }
+            if (words.some(w => w.length > 30)) {
+                errorMessage.textContent = "A single word cannot exceed 30 characters.";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Duplicate Detection
+            const normalizedNew = normalizeIdea(rawIdea);
+            const isDuplicate = ideas.some(existing => normalizeIdea(existing.text) === normalizedNew);
+            
+            if (isDuplicate) {
+                errorMessage.textContent = "This idea already exists.";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            ideas.push({ text: rawIdea, author: name });
+            localStorage.setItem('sharedIdeas', JSON.stringify(ideas));
+            renderIdeas();
             ideaInput.value = '';
         });
 
         document.getElementById('resetInputBtn').addEventListener('click', () => {
             ideaInput.value = '';
             nameSelect.selectedIndex = 0;
+            errorMessage.style.display = 'none';
         });
 
         document.getElementById('clearIdeasBtn').addEventListener('click', () => {
             if (confirm('Clear all ideas?')) {
-                ideaList.innerHTML = '<li style="text-align: center; font-style: italic; opacity: 0.6;">No ideas shared yet. Be the first!</li>';
-                ideaCount = 0;
-                document.getElementById('ideaCountValue').textContent = '0';
+                ideas = [];
+                localStorage.setItem('sharedIdeas', JSON.stringify(ideas));
+                renderIdeas();
             }
         });
 
-        // Init
+        // Init Idea Board
+        renderIdeas();
         addSemesterCourseRow();
     </script>
 </body>
